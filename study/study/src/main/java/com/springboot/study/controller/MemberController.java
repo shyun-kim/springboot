@@ -51,4 +51,17 @@ public class MemberController {
     public String signup() {
         return "signup"; //회원가입 화면, view name --> templates
     }
+
+    @PostMapping("/signup")
+    public String signup(Member member, Model model) {
+        System.out.println("id: "+member.getId());
+        System.out.println("password: "+member.getPass());
+        System.out.println("name: "+member.getName());
+        System.out.println("address: "+member.getAddress());
+        model.addAttribute("member", member);
+        return "signupResult"; //회원가입 화면, view name --> templates
+    }
 }
+
+
+
