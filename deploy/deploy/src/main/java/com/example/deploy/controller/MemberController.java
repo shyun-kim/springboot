@@ -38,3 +38,4 @@ public class MemberController {
         return "signupResult"; //회원가입 화면, view name --> templates
     }
 }
+
