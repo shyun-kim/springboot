@@ -22,11 +22,24 @@
 
             //3. 응답 객체를 통한 결과 출력
             if(response.ok) {
-                const {result} = await response.json();
-                console.log(result);
-                
-                if(result) console.log("로그인 성공");
-                else console.log("로그인 실패");
+                const {result, member} = await response.json(); // {"result": result, "member":member}
+                console.log(result, member);
+
+
+                if(result) {
+                    alert("로그인 성공");
+                    const output = `
+                        <ul>
+                            <li>아이디 : ${member.id}</li>
+                            <li>패스워드 : ${member.pass}</li>
+                        </ul>
+                    `;
+                    <!--document.getElementById("result").innerHTML = output;-->
+                }
+                else {
+                    document.getElementById("result").remove();
+                    alert("로그인 실패");
+                }
             }
 
         }
@@ -48,6 +61,8 @@
             <button type="reset">Reset</button>
         </li>
     </ul>
+    <hr>
+    <div id="result"></div>
     <a href="/">홈으로</a>
 </body>
 </html>

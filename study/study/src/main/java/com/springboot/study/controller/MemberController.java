@@ -11,9 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MemberController {
-    @GetMapping("/login")
-    public String login() {
-        return "login"; //로그인 화면, view name --> templates
+    @GetMapping("/restLogin")
+    public String resetLogin() {
+        return "restLogin"; //로그인 화면, view name --> templates
     }
 
     /**
@@ -47,9 +47,9 @@ public class MemberController {
         return "loginResult";
     }
 
-    @GetMapping("/signup")
-    public String signup() {
-        return "signup"; //회원가입 화면, view name --> templates
+    @GetMapping("/restSignup")
+    public String restSignup() {
+        return "restSignup"; //회원가입 화면, view name --> templates
     }
 
     @PostMapping("/signup")
