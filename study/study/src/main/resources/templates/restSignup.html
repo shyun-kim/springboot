@@ -5,34 +5,64 @@
     <title>Sign up</title>
     <script>
         async function handleSubmit() {
+            //1. JSON 객체 생성
+            const id = document.getElementById("id").value;
+            const pass = document.getElementById("pass").value;
+            const name = document.getElementById("name").value;
+            const address = document.getElementById("address").value;
+            const formData = { "id": id, "pass": pass, "name": name, "address": address };
+            console.log(id, pass, name, address, formData);
 
-        }
+            //2. fetch 호출
+            //   --> await fetch 함수 요청(request) 및 응답(response) 생성
+            const response = await fetch("http://localhost:8080/restSignup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }, //전송하는 객체 타임
+                body: JSON.stringify(formData) //전송 데이터
+            });
+            console.log(response);
+
+            //3. response 결과 출력
+            if(response.ok) {
+                const member = await response.json();
+                const output = `
+                    <ul>
+                        <li>ID: ${member.id}</li>
+                        <li>PASS: ${member.pass}</li>
+                        <li>NAME: ${member.name}</li>
+                        <li>ADDRESS: ${member.address}</li>
+                    </ul>
+                `;
+                document.getElementByID("result").innerHTML = output;
+            }
     </script>
 </head>
 <body>
     <h1>Sign up 화면(REST)</h1>
-        <ul>
-            <li>
-                <label>아이디</label>
-                <input type="text" id="id">
-            </li>
-            <li>
-                <label>패스워드</label>
-                <input type="password" id="pass">
-            </li>
-            <li>
-                <label>이름</label>
-                <input type="text" id="name">
-            </li>
-            <li>
-                <label>주소</label>
-                <input type="text" id="address">
-            </li>
-            <li>
-                <button type="button" onclick="handleSubmit()">Sign up</button>
-                <button type="reset">Reset</button>
-            </li>
-        </ul>
+    <ul>
+        <li>
+            <label>아이디</label>
+            <input type="text" id="id">
+        </li>
+        <li>
+            <label>패스워드</label>
+            <input type="password" id="pass">
+        </li>
+        <li>
+            <label>이름</label>
+            <input type="text" id="name">
+        </li>
+        <li>
+            <label>주소</label>
+            <input type="text" id="address">
+        </li>
+        <li>
+            <button type="button" onclick="handleSubmit()">Sign up</button>
+            <button type="reset">Reset</button>
+        </li>
+    </ul>
+    <hr>
+    <div id="result"></div>
     <a href="/">홈으로</a>
 </body>
 </html>

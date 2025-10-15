@@ -11,9 +11,25 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MemberController {
+    /**
+     * REST API 회원가입 화면
+     */
+    @GetMapping("/restSignup")
+    public String restSignup() {
+        return "restSignup"; //회원가입 화면, view name --> templates
+    }
+
+    /**
+     * REST API 로그인 화면
+     */
     @GetMapping("/restLogin")
     public String resetLogin() {
         return "restLogin"; //로그인 화면, view name --> templates
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login"; //로그인 화면, view name --> templates
     }
 
     /**
@@ -47,9 +63,9 @@ public class MemberController {
         return "loginResult";
     }
 
-    @GetMapping("/restSignup")
-    public String restSignup() {
-        return "restSignup"; //회원가입 화면, view name --> templates
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup"; //회원가입 화면, view name --> templates
     }
 
     @PostMapping("/signup")

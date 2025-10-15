@@ -11,8 +11,7 @@ import java.util.Map;
 @RestController //내부에 @ResponseBody 포함, Map 객체 생성없이 JSON 객체 바로 전송
 public class MemberRestController {
     @PostMapping("/restLogin")
-//    @ResponseBody
-    public boolean restLogin(@RequestBody Member member) {
+    public Map<String, Object> restLogin(@RequestBody Member member) {
         boolean result = false;
         if(member.getId().equals("test") && member.getPass().equals("1234")) result = true;
 
@@ -24,12 +23,22 @@ public class MemberRestController {
 
         // return {"result":"로그인 성공!"};
 //        return response; //호출한 페이지로 문자열 혹은 JSON 객체로 전송 : {"result": true}
-        return result;
+        return response;
     }
 
-//    @GetMapping("/restLogin")
-//    @ResponseBody
-//    public String restLogin() {
-//        return "restLogin"; //view name
+//    @PostMapping("/restSignup")
+//    public Map<String, Object> restSignup(@RequestBody Member member) {
+//        Map<String, Object> response = new HashMap<String, Object>();
+//        response.put("member", member);
+////        System.out.println(member.getId());
+////        System.out.println(member.getPass());
+////        System.out.println(member.getName());
+////        System.out.println(member.getAddress());
+//        return response;
 //    }
+
+    @PostMapping("/restSignup")
+    public Member restSignup(@RequestBody Member member) {
+        return member;
+}
 }
