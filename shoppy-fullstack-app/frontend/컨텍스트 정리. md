@@ -1,0 +1,10 @@
+## 전역 객체 생성 및 관리 담당 : Context
+- createContext 함수를 이용하여 생성
+- provider를 이용하여 Context 사용 범위를 지정
+
+## Context의 객체 또는 값 호출
+- useContext 훅 사용, 리액트 제공
+
+## Context의 객체 또는 값 변경
+- 커스텀 훅을 생성하여 사용
+- useXXXX 로 시작하는 함수로 리액트에서 관리함
