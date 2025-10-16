@@ -27,7 +27,7 @@ export function ProductDetail() {
     }, []);
 
     return (
-        <div className="content">
+        <div className="content" key='idx'>
             <div className='product-detail-top'>
                 <div className='product-detail-image-top'>
                     <img src={product.image} />

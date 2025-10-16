@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { validateSignupFormCheck } from '../utils/validate.js';
 import { initForm } from '../utils/init.js';
+import { axiosPost } from '../utils/dataFetch.js';
 
 export function Signup() {
     const initArray = ['id', 'pwd', 'cpwd', 'name', 'phone', 'emailName', 'emailDomain'];
@@ -18,6 +20,7 @@ export function Signup() {
 
     const [form, setForm] = useState(initForm(initArray));
     const [errors, setErrors] = useState({...initForm(initArray), emailDomain: ""});
+    const navigate = useNavigate();
 
     const handleChangeForm = (e) => {
         const { name, value } = e.target;
@@ -29,12 +32,44 @@ export function Signup() {
         setForm(initForm(initArray));
     }
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const param = { refs: refs, setErrors: setErrors }
         if(validateSignupFormCheck(param)) {
-            console.log("submit-->", form);
+            /**
+                스프링부트 연동 - Post, /member/signup
+            */
+            const url = "http://localhost:8080/member/signup";
+            const formData = { ...form, email: form.emailName.concat('@', form.emailDomain) }
+            console.log('formData-->', formData);
+            const result = await axiosPost(url, formData);
+            if(result) {
+                alert("회원가입에 성공했습니다.");
+                navigate("/login");
+            }
+            else {
+                alert("회원가입에 실패했습니다.");
+            }
+
+
+            /**
+            formData = {
+                "id":id ... 로 해도 됨
+                }
+            */
         }
+    }
+
+    /**
+     아이디 중복 체크
+     */
+    const handleDuplicateIdCheck = async() => {
+        console.log(form.id);
+        const url = "http://localhost:8080/member/idcheck";
+        const data = { "id": form.id }; //JSON 타입으로 보내기 위해서 {} 안에 적음
+        const result = await axiosPost(url, data);
+
+        alert(result);
     }
 
 
@@ -54,7 +89,8 @@ export function Signup() {
                                         ref={refs.idRef}
                                         onChange={handleChangeForm}
                                         placeholder = "아이디 입력(6~20자)" />
-                                <button type='button'>중복확인</button>
+                                <button type='submit'
+                                        onClick={handleDuplicateIdCheck}>중복확인</button>
                                 <input type="hidden" id='idCheckResult' value='default' />
                             </div>
                         </li>
@@ -66,7 +102,7 @@ export function Signup() {
                                         ref={refs.pwdRef}
                                         value={form.pwd}
                                         onChange={handleChangeForm}
-                                        placehoder='비밀번호 입력(문자, 숫자, 특수문자 포함 6~12자)'/>
+                                        placeholder='비밀번호 입력(문자, 숫자, 특수문자 포함 6~12자)'/>
                             </div>
                         </li>
                         <li>
@@ -100,7 +136,7 @@ export function Signup() {
                                         value={form.phone}
                                         ref={refs.phoneRef}
                                         onChange={handleChangeForm}
-                                        placehoder='휴대폰 번호 입력("-" 포함)'/>
+                                        placeholder='휴대폰 번호 입력("-" 포함)'/>
                             </div>
                         </li>
                         <li>

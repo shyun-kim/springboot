@@ -26,5 +26,7 @@ export function validateSignupFormCheck({refs, setErrors}) {
         setErrors({emailDomain: "이메일 주소를 선택해 주세요"});
         refs.emailDomainRef.current.focus();
         return false;
+    } else {
+        return true;
     }
 }
