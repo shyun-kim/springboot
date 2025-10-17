@@ -18,3 +18,5 @@ create table member(
     mdate	date
 );
 desc member;
+select * FROM shoppy.member;
+select count(id) from member where id = 'test';
