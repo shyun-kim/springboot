@@ -47,7 +47,7 @@ export function Signup() {
         else {
             alert("회원가입에 실패했습니다.");
         }
-    }//handleSubmit
+    }
 
     /**
      아이디 중복 체크
@@ -74,7 +74,7 @@ export function Signup() {
                                         ref={refs.idRef}
                                         onChange={handleChangeForm}
                                         placeholder = "아이디 입력(6~20자)" />
-                                <button type='submit'
+                                <button type='button'
                                         onClick={handleDuplicateIdCheck}>중복확인</button>
                                 <input type="hidden" id='idCheckResult' value='default' />
                             </div>
