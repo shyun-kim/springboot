@@ -16,7 +16,7 @@ export function Footer() {
                 </p>
                 <p>
                     COPYRIGHT ⓒ ㈜더블유컨셉코리아 ALL RIGHTS RESERVED.
-                </p>
+                </p> 
             </div>
         </div>
     );

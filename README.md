@@ -1,2 +1,2 @@
 # springboot
-spring 실습
+스프링부트 실습

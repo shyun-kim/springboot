@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { axiosData } from '../../utils/dataFetch.js';
 import { StarRating } from '../commons/StarRating.jsx';
 import { ImageList } from '../commons/ImageList.jsx';
@@ -10,17 +10,16 @@ import { TbThumbUp } from 'react-icons/tb';
  * ProductDetail > Review
  */
 export function Review() {
-    const [reviewData,setReviewData] = useState({});
+    const [reviewData, setReviewData] = useState({});
 
-    useEffect(() => {
+    useEffect(()=>{
         const fetch = async() => {
             const jsonData = await axiosData("/data/productReview.json");
             setReviewData(jsonData);
         }
         fetch();
     }, []);
-
-
+    
     return (
         <div>
             <ReviewTop data={reviewData} />
@@ -35,19 +34,19 @@ export function Review() {
 export function ReviewTop({ data }) {
     return (
         <div className='review-top'>
-            <div style={{paddingTop: "20px"}}></div>
+            <div style={{paddingTop:"20px"}}></div>
             <h3>상품 만족도(569)</h3>
             <ul className='review-top-list'>
                 <li>
                     <div>
                         <p className='review-top-text'>
-                            구매하신 분들의 상품에 대한 평점입니다.
+                          구매하신 분들의 상품에 대한 평점입니다.  
                         </p>
                         <StarRating totalRate={3.6}
                                     style="star-black-big" />
                     </div>
                 </li>
-                { data.topList && data.topList.map(item =>
+                { data.topList && data.topList.map(item => 
                     <li>
                         <ReviewType title={item.title}
                                     names={item.names}
@@ -69,13 +68,16 @@ export function ReviewType({title, names, values}) {
     return (
         <div className='review-type'>
             <p className='review-type text'>{title}</p>
-            {names && names.map((name, idx) =>
-                <div className='bar-metadata'>
-                    <span className='bar-text1'>{name}</span>
-                    <div className='bar-bg'>
-                        <div className='bar-value' style={{width: `${values[idx]}%`}}></div>
+            {names && names.map((name, idx) => 
+                <div className="bar-metadata">
+                    <span className="bar-text1">{name}</span>
+                    <div className="bar-bg">
+                    <div
+                        className="bar-value"
+                        style={{ width: `${values[idx]}%` }}
+                    ></div>
                     </div>
-                    <span className='bar-text2'>{values[idx]}%</span>
+                    <span className="bar-text2">{values[idx]}%</span>
                 </div>
             )}
         </div>
@@ -89,10 +91,10 @@ export function ReviewList() {
     return (
         <div>
             <ul className='review-list-title'>
-                <li><button type='button'>최신순</button></li>
-                <li><button type='button'>평점 높은순</button></li>
-                <li><button type='button'>평점 낮은순</button></li>
-                <li><button type='button'>추천순<FaRegCircleQuestion /></button></li>
+                <li><button type="button">최신순</button></li>
+                <li><button type="button">평점 높은순</button></li>
+                <li><button type="button">평점 낮은순</button></li>
+                <li><button type="button">추천순<FaRegCircleQuestion /></button></li>
             </ul>
 
             <table className='review-list-content'>
@@ -102,21 +104,21 @@ export function ReviewList() {
                             <StarRating totalRate={3.4}
                                         style="start-black-review" />
                         </td>
-                        <td><ReviewListItem /></td>
+                        <td> <ReviewListItem /> </td>
                     </tr>
                     <tr>
                         <td className='review-list-star'>
                             <StarRating totalRate={4.4}
                                         style="start-black-review" />
                         </td>
-                        <td><ReviewListItem /></td>
+                        <td> <ReviewListItem /> </td>
                     </tr>
                     <tr>
                         <td className='review-list-star'>
                             <StarRating totalRate={4.8}
                                         style="start-black-review" />
                         </td>
-                        <td><ReviewListItem /></td>
+                        <td> <ReviewListItem /> </td>
                     </tr>
                     <tr>
                         <td colSpan={2}>{"<< "} 1 2 3 4 5 {" >>"}</td>
@@ -167,7 +169,7 @@ export function ReviewListItem() {
             </ul>
             <ul className='pdt_review_photo'>
                 <li>
-                    <img src='https://media.wconcept.co.kr/review/306388708/306388708_1753423555430.jpg?RS=300"' />
+                    <img src="https://media.wconcept.co.kr/review/306388708/306388708_1753423555430.jpg?RS=300" />
                 </li>
             </ul>
             <div className='pdt_review_detail'>
@@ -179,18 +181,16 @@ export function ReviewListItem() {
             </div>
             <div className='product_review_reaction'>
                 <div className='btn_report_item'>
-                    <button
-                        type='button'
-                        className='btn_report_item link_txt'>
-                            <span>신고</span></button>
-                    <button 
-                        type='button'
-                        className='btn_report_item link_txt'>
-                            <span>숨김</span></button>
+                    <button type='button'
+                            className='btn_report_item link_txt'
+                    ><span>신고</span></button>
+                    <button type='button'
+                            className='btn_report_item link_txt'
+                    ><span>숨김</span></button>
                 </div>
-                <LikeItem   style="review-like"
-                            icons="tb"
-                            value="0" />
+                <LikeItem style="review-like"
+                          icons="tb"
+                          value="0" />                
             </div>
         </div>
     );

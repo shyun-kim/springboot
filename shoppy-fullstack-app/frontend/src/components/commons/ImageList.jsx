@@ -6,9 +6,10 @@ export function ImageList({imgList, className}) {
         <ul className={className}>
             {imgList && imgList.map((img, idx) =>
                 <li key={idx}>
-                    <img src={img} />
+                    <img src={`/images/${img}`} />
                 </li>
             )}
         </ul>
     );
 }
+

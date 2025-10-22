@@ -8,12 +8,14 @@ export const ProductProvider = ({children}) => {
     const [imgList, setImgList] = useState([]);
 
     return (
-        <ProductContext.Provider value={{
-            productList, setProductList,
-            product, setProduct,
-            imgList, setImgList
-        }}>
-            {children}
+        <ProductContext.Provider value={{  
+                                        productList, setProductList,
+                                        product, setProduct,
+                                        imgList, setImgList
+                                    }}>
+            {children}  
         </ProductContext.Provider>
     );
 }
+
+

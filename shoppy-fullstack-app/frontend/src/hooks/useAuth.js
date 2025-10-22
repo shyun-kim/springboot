@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
-import { AuthContext } from '../context/AuthContext.js'
-
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext.js';
 
 /**
  * AuthContext에 저장된 데이터를 제어하는 커스텀 훅 함수
@@ -10,13 +9,13 @@ export function useAuth() {
 
     //로그인
     const handleLogin = (userId) => {
-        setIsLogin(!isLogin);
+        setIsLogin(!isLogin); 
         const loginInfo = {
-            "userId": userId,
-            "token": "asdfasdfqwer1234"
-        }
+                    "userId": userId,
+                    "token": "dkfj122345dfdf"
+                }
         // 로그인 정보를 브라우저 > Application Tab > Local Storage에 객체를 문자열로 저장
-        localStorage.setItem("loginInfo", JSON.stringify(loginInfo));
+        localStorage.setItem("loginInfo", JSON.stringify(loginInfo)); 
     }
 
     //로그아웃
@@ -26,5 +25,7 @@ export function useAuth() {
         localStorage.removeItem("loginInfo");
     }
 
-    return {handleLogin, handleLogout}
+
+    return { handleLogin, handleLogout }
 }
+

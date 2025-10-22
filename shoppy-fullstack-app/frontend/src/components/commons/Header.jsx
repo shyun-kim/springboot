@@ -15,7 +15,7 @@ export function Header() {
         const loginInfo = localStorage.getItem("loginInfo");
         if(succ && loginInfo === null) {
             alert("로그아웃 되었습니다");
-            navigate('/');
+            navigate("/");
         }
     }
 
@@ -26,31 +26,29 @@ export function Header() {
                     <FiShoppingBag />
                     <span>Shoppy-redux(toolkit)::fullstack</span>
                 </Link>
-                <nav className="header-right">
+                <nav className='header-right'>
                     <Link to="/all">Products</Link>
-                    <Link to="/cart" className='header-icons-cart-link'>
-                        <GiShoppingCart className='header-icons' />
-                        <span className="header-icons-cart">{cartCount}</span>
+                    <Link to="/cart" className="header-icons-cart-link">
+                        <GiShoppingCart className='header-icons'/>
+                        <span className='header-icons-cart'>{cartCount}</span>
                     </Link>
                     { !isLogin && 
                         <Link to="/login">
                             <button type="button">Login</button>
-                        </Link>
+                        </Link>                    
                     }
-                    { isLogin && 
-                        <button type='button'
-                                onClick={handleLogout}>
-                            Logout
-                        </button>
+                    { isLogin &&
+                        <button type="button"
+                                onClick={handleLogout}>Logout</button>
                     }
                     <Link to="/signup">
                         <button type="button">Signup</button>
-                    </Link>
-                    {isLogin && 
+                    </Link>    
+                    { isLogin &&
                         <Link to="/support">
                             <button type="button">Support</button>
-                        </Link>
-                    }
+                        </Link>                   
+                    }               
                 </nav>
             </div>
         </div>
