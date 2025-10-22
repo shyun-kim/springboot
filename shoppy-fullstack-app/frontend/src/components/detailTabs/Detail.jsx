@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ImageList } from '../commons/ImageList.jsx';
-import { getDetailinfo } from '../../feature/product/productAPI.js';
+import { getDetailInfo } from '../../feature/product/productAPI.js';
 
 /**
  * ProductDetail > Detail  
@@ -9,7 +9,7 @@ export function Detail({imgList, pid}) {
     const [info, setInfo] = useState({});
     useEffect(() => {
         const loadData = async(pid) => {
-            const jsonData = await getDetailinfo(pid);
+            const jsonData = await getDetailInfo(pid);
             setInfo(jsonData);
         }
         loadData(pid);

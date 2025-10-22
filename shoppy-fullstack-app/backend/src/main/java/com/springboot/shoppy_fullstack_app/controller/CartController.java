@@ -14,11 +14,14 @@ public class CartController {
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }
+    @PostMapping("/updateQty")
+    public int updateQty(@RequestBody CartItem cartItem){
+        return cartService.updateQty(cartItem);
+    }
 
     @PostMapping("/checkQty")
-    public String checkQty(@RequestBody CartItem cartItem) {
-        String result = cartService.checkQty(cartItem);
-        return "";
+    public CartItem checkQty(@RequestBody CartItem cartItem) {
+        return cartService.checkQty(cartItem);
     }
 
     @PostMapping("/add")

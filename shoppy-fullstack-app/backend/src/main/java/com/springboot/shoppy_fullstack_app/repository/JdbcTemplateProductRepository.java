@@ -46,16 +46,8 @@ public class JdbcTemplateProductRepository  implements ProductRepository{
     @Override
     public ProductDetailInfo findProductDetailInfo(int pid) {
         String sql = " select did, title_en as titleEn, title_ko as titleKo, pid, list"
-                + " from product_detailinfo"
+                + " from product_detailInfo"
                 + " where pid = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ProductDetailInfo.class), pid);
-    }
-
-    @Override
-    public ProductDetailInfo findProductDetailinfo(int pid) {
-        String sql = " select did, title_en as titleEn, title_ko as titleKo, pid, list"
-                   + " from product_detailInfo"
-                   + " where pid = ?";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ProductDetailInfo.class), pid);
     }
 

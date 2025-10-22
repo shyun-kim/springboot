@@ -18,26 +18,29 @@ export const showCart = () => async (dispatch) => {
 }
 
 export const updateCart =  async(cid, type) => {
-    String url = "/cart/updateQty";
+    const url = "/cart/updateQty";
     const data = {"cid": cid, "type": type};
-    return 1;
+    const rows = await axiosPost(url, data);
+    return rows;
 //    dispatch(updateCartItem({"cid":cid, "type":type})); //수량변경
 //    dispatch(updateTotalPrice());
 //    dispatch(updateCartCount());
 }
 
-export const checkQty = async(pid, size) => {
+export const checkQty = async(pid, size, id) => {
     //쇼핑백 추가한 상품과 사이즈가 DB 테이블에 있는지 유무 확인
     const url = "/cart/checkQty";
-    const data = {"pid": pid, "size":size};
-    const checkRows = await axiosGet(url, data);
+    const data = {"pid": pid, "size":size, "id": id};
+    const jsonData = await axiosGet(url, data);
+    return jsonData;
 }
 
 export const addCart = (pid, size) => async (dispatch) => {
-    const checkResult = await checkQty(pid, size);
+    const {userId} = JSON.parse(localStorage.getItem("loginInfo"));
+    const checkResult = await checkQty(pid, size, userId);
+
     if(!checkResult.checkQty) {
         const url = "/cart/add";
-        const {userId} = JSON.parse(localStorage.getItem("loginInfo"));
         const item = {"pid":pid, "size":size, "qty":1, "id": userId};
         const rows = await axiosPost(url, item);
         alert("새로운 상품이 추가되었습니다.")

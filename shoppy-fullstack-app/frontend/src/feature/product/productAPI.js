@@ -24,8 +24,8 @@ export const getQna = async(pid) => {
 /**
     상품 상세 정보
 */
-export const getDetailinfo = async(pid) => {
-    const url = "/product/detailinfo";
+export const getDetailInfo = async(pid) => {
+    const url = "/product/detailInfo";
     const info  = await axiosPost(url, {"pid": pid});
     const list = JSON.parse(info.list);
     return { ...info, list: list };

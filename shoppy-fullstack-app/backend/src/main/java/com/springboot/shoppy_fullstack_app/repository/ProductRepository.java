@@ -12,8 +12,6 @@ public interface ProductRepository {
     List<ProductQna> findQna(int pid);
     ProductDetailInfo findProductDetailInfo(int pid);
 
-    ProductDetailInfo findProductDetailinfo(int pid);
-
     Product findByPid(int pid);
     List<Product> findAll();
 }

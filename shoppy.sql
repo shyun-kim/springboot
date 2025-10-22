@@ -245,4 +245,7 @@ select * from cart;
 delete from cart where cid in (1,2);
 
 --  pid:1, size: xs인 상품 조회
-select count(*) as checkQty, cid from cart where pid = 4 and size = 'xs' group by cid;
+select count(*) as checkQty, cid
+from cart
+where pid = 4 and size = 'xs'
+group by cid;
