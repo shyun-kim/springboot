@@ -2,7 +2,7 @@ import React from 'react';
 import { addCartItem, updateCartCount, 
          showCartItem, updateTotalPrice,
          updateCartItem, removeCartItem } from './cartSlice.js';
-import { axiosData, axiosPost, axiosGet } from '../../utils/dataFetch.js';
+import { axiosData, axiosPost } from '../../utils/dataFetch.js';
 
 export const removeCart = (cid) => async(dispatch) => {
     dispatch(removeCartItem({"cid": cid}));
@@ -31,7 +31,7 @@ export const checkQty = async(pid, size, id) => {
     //쇼핑백 추가한 상품과 사이즈가 DB 테이블에 있는지 유무 확인
     const url = "/cart/checkQty";
     const data = {"pid": pid, "size":size, "id": id};
-    const jsonData = await axiosGet(url, data);
+    const jsonData = await axiosPost(url, data);
     return jsonData;
 }
 
@@ -47,6 +47,7 @@ export const addCart = (pid, size) => async (dispatch) => {
         dispatch(updateCartCount());
     } else {
         const rows = await updateCart(checkResult.cid, "+");
+        alert("상품이 추가되었습니다.")
     }
     return 1;
 
