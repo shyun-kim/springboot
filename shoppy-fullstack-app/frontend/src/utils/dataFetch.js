@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 /**
  * 배열의 rows 그룹핑
  */
@@ -57,4 +58,3 @@ export const fetchData = async (url) => {
     const jsonData = await response.json(); 
     return jsonData;
 }
-

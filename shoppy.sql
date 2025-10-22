@@ -235,3 +235,14 @@ create table cart(
 
 show tables;
 desc cart;
+
+
+
+--  mysql은 수정, 삭제 시 update mode를 변경
+set sql_safe_updates = 0;
+
+select * from cart;
+delete from cart where cid in (1,2);
+
+--  pid:1, size: xs인 상품 조회
+select count(*) as checkQty, cid from cart where pid = 4 and size = 'xs' group by cid;

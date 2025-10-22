@@ -15,6 +15,14 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
+    public String checkQty(CartItem cartItem) {
+        CartItem result = cartRepository.checkQty(cartItem);
+        System.out.println("checkQty" + result.getCheckQty());
+        System.out.println("cid" + result.getCid());
+        return "";
+    }
+
+    @Override
     public int add(CartItem cartItem) {
         return cartRepository.add(cartItem);
     }

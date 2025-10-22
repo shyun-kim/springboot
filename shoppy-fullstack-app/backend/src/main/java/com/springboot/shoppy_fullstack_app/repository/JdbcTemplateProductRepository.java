@@ -1,10 +1,9 @@
 package com.springboot.shoppy_fullstack_app.repository;
 
 import com.springboot.shoppy_fullstack_app.dto.Product;
-import com.springboot.shoppy_fullstack_app.dto.ProductDetailinfo;
+import com.springboot.shoppy_fullstack_app.dto.ProductDetailInfo;
 import com.springboot.shoppy_fullstack_app.dto.ProductQna;
 import com.springboot.shoppy_fullstack_app.dto.ProductReturn;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,11 +44,19 @@ public class JdbcTemplateProductRepository  implements ProductRepository{
     }
 
     @Override
-    public ProductDetailinfo findProductDetailinfo(int pid) {
+    public ProductDetailInfo findProductDetailInfo(int pid) {
         String sql = " select did, title_en as titleEn, title_ko as titleKo, pid, list"
-                   + " from product_detailinfo"
+                + " from product_detailinfo"
+                + " where pid = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ProductDetailInfo.class), pid);
+    }
+
+    @Override
+    public ProductDetailInfo findProductDetailinfo(int pid) {
+        String sql = " select did, title_en as titleEn, title_ko as titleKo, pid, list"
+                   + " from product_detailInfo"
                    + " where pid = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ProductDetailinfo.class), pid);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ProductDetailInfo.class), pid);
     }
 
     @Override
