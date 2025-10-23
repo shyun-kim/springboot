@@ -17,10 +17,10 @@ export function Cart() {
     return (
         <div className='cart-container'>
             <h2 className='cart-header'>장바구니</h2>
-            { cartList && cartList.map(item => 
-                <div key={item.pid}>
+            { cartList && cartList.map(item =>
+                <div key={item.cid}>
                     <div className='cart-item'>
-                        <img src={item.image} alt="product img" />
+                        <img src={`/images/${item.image}`} alt="product img" />
                         <div className='cart-item-details'>
                             <p className='cart-item-title'>{item.name}</p>
                             <p className='cart-item-title'>{item.size}</p>

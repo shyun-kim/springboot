@@ -12,4 +12,3 @@ export function ImageList({imgList, className}) {
         </ul>
     );
 }
-

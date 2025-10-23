@@ -349,83 +349,17 @@ limit 1;
 
 select * from cart;
 
-select count(*)
-from (
-SELECT cid, sum(pid=1 AND size='xs' and id='test') AS checkQty
-                	FROM cart
-                	GROUP BY cid, id
-                	order by checkQty desc
-                	limit 1 ) t;
-                    
-                    
--- 
-(
-    SELECT 
-        cid, 
-        (SELECT COUNT(*) FROM cart WHERE pid=1 AND size='xs' AND id='test') AS checkQty
-    FROM 
-        cart 
-    WHERE 
-        pid=1 AND size='xs' AND id='test'
-    LIMIT 1 -- 실제 cid가 여러 개일 경우 하나만 가져옴
-)
-UNION ALL
-(
-    SELECT 
-        NULL AS cid, 
-        0 AS checkQty
-)
-ORDER BY 
-    checkQty DESC
-LIMIT 1; -- 두 행 중 checkQty가 더 큰(즉, 데이터가 있는) 행을 우선 선택
+-- 장바구니 상품갯수 조회
+select count(qty) from cart where id = 'test';
+select ifnull(sum(qty), 0) as sumQty from cart where id = 'hong';  
 
--- 
-SELECT 
-    MAX(checkQty) AS checkQty,
-    MAX(cid) AS cid
-FROM (
-    SELECT cid, COUNT(*) AS checkQty
-    FROM cart
-    WHERE pid = 1 AND size = 'xs' AND id = 'test'
-    UNION ALL
-    SELECT NULL, 0
-) t;
-
---
-SELECT 
-    MAX(t.cid) AS cid,
-    MAX(t.checkQty) AS checkQty
-FROM (
-    SELECT cid, COUNT(*) AS checkQty
-    FROM cart
-    WHERE pid = 1 AND size = 'xs' AND id = 'test'
-    UNION ALL
-    SELECT NULL AS cid, 0 AS checkQty
-) AS t;
---
-
-SELECT
-  (SELECT cid
-     FROM cart
-     WHERE pid = 1 AND size = 'xs' AND id = 'test'
-     LIMIT 1) AS cid,
-  COUNT(*) AS checkQty
-FROM cart
-WHERE pid = 1 AND size = 'xs' AND id = 'test';
+-- 장바구니 리스트 조회 : 상품(product) + 장바구니(cart) + 회원(member) 
+-- 어떤 회원이 어떤 상품을 몇개 넣었는가???
 
 
-
-select * from cart;
-
---
-SELECT 
-      ifnull(MAX(cid), 0) AS cid,
-      COUNT(*) AS checkQty
-    FROM cart
-    WHERE pid = 1 AND size = 'xs' AND id = 'test';
-
-
-
-    
-    
-    
+-- 장바구니 총 상품 가격 : qty(cart), price(product)
+select sum(c.qty * p.price) as total_price
+from cart c
+inner join product p
+on c.pid = p.pid
+where c.id= 'test';
