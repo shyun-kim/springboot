@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { SearchForm } from '../components/commons/SearchForm.jsx';
 import { MenuList } from '../components/commons/MenuList.jsx';
 import { axiosData } from '../utils/dataFetch.js';
+import { getList } from '../feature/support/supportAPI.js';
 
 export function Support() {
     const [menus, setMenus] = useState([]);
@@ -11,9 +12,10 @@ export function Support() {
     useEffect(()=>{
         const fetch = async() => {
             const jsonData = await axiosData("/data/support.json");
+            const list = await getList();
             setMenus(jsonData.menus);
             setCategory(jsonData.category);
-            setList(jsonData.list);
+            setList(list);
         }
         fetch();
     }, []);
@@ -52,7 +54,7 @@ export function Support() {
                             {list && list.map((item, idx) => 
                                 <tr>
                                     <td>{idx + 1}</td>
-                                    <td>[{item.type}]</td>
+                                    <td>[{item.stype}]</td>
                                     <td>{item.title}</td>
                                     <td>{item.rdate}</td>
                                     <td>{item.hits}</td>
