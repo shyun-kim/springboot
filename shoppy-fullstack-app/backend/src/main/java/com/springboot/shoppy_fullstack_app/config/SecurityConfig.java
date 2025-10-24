@@ -25,11 +25,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/member/**", "/product/**", "/cart/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/member/**", "/product/**", "/cart/**","/support/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .formLogin(form -> form.disable())   // 리다이렉트 발생 폼로그인 비활성화
                 .httpBasic(basic -> basic.disable()); // (선택)
         return http.build();
