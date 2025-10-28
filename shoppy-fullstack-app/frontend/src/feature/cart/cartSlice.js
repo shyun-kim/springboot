@@ -4,7 +4,8 @@ import { cartItemsCheck, cartItemsAddInfo } from '../../utils/cart.js';
 const initialState = {
   cartCount: 0,
   cartList: [],
-  totalPrice: 0
+  totalPrice: 0,
+  cidList:[]
 }
 
 export const cartSlice = createSlice({
@@ -18,21 +19,22 @@ export const cartSlice = createSlice({
     showCartItem (state, action) {
         const { items } = action.payload;
         state.cartList = items;
+        state.cidList = items.map(item => item.cid);
 //        state.cartList = cartItemsAddInfo(items, state.cartList);
     },
     updateCartCount (state, action) {
 //        state.cartCount = state.cartList.reduce((total, item) => total + item.qty, 0);
 //        const { count, type } = action.payload;
-//        type? state.cartCount +=  action.payload.count
-//                        : state.cartCount = count;
+//        type? state.cartCount +=  count
+//                        : state.cartCount -= count;
         state.cartCount = action.payload.count;
     },
-    resetCartCount(state, action) {
+    resetCartCount(state){
         state.cartCount = 0;
     },
     updateTotalPrice (state, action) {
+    console.log("totalPrice ==> ", action.payload.totalPrice);
         state.totalPrice = action.payload.totalPrice;
-//            = state.cartList.reduce((total, item) => total + (item.qty * item.price), 0);
     },
     updateCartItem (state, action) {
         const { cid, type } = action.payload;

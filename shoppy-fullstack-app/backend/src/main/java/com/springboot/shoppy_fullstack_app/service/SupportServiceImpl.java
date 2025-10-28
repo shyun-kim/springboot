@@ -24,7 +24,6 @@ public class SupportServiceImpl implements SupportService{
         } else {
             list = supportRepository.findAll(support);
         }
-
-        return supportRepository.findAll(support);
+        return list;
     }
 }

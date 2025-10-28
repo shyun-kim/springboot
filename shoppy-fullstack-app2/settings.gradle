@@ -1,3 +1,0 @@
-rootProject.name = 'shoppy-fullstack-app2'
-include 'frontend2'
-include 'backend2'

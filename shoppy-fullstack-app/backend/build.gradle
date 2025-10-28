@@ -36,14 +36,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-springBoot {
-    mainClass = 'com.springboot.shoppy_fullstack_app.ShoppyFullstackAppApplication'
-}
-
-tasks.bootRun {
-    mainClass = 'com.springboot.shoppy_fullstack_app.ShoppyFullstackAppApplication'
-}
-
 tasks.named('test') {
 	useJUnitPlatform()
 }

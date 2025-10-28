@@ -11,9 +11,6 @@ export function Return() {
         fetch();
     }, [])
 
-    console.log(returnData);
-    
-
     return (
         <div>
             <div style={{paddingTop:"20px"}}></div>

@@ -15,10 +15,9 @@ export function ProductDetail() {
     const {pid} = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const product = useSelector((state) => state.product.product );
+    const product = useSelector((state) => state.product.product);
     const imgList = useSelector((state) => state.product.imgList);
     const isLogin = useSelector((state) => state.auth.isLogin);
-
     const [size, setSize] = useState('XS');  
     const [tabName, setTabName] = useState('detail');
     const tabLabels = ['DETAIL', 'REVIEW', 'Q&A', 'RETURN & DELIVERY'];
@@ -73,7 +72,6 @@ export function ProductDetail() {
                                 onClick={()=>{
                                     isLogin? dispatch(addCart(product.pid, size))
                                     : navigate("/login")}}
-
                                 > 쇼핑백 담기</button>
                         <div type="button" className="gift">
                             <PiGiftThin />

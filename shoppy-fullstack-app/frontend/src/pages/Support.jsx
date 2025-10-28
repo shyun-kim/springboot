@@ -11,8 +11,8 @@ export function Support() {
 
     useEffect(()=>{
         const fetch = async() => {
-            const jsonData = await axiosData("/data/support.json");
-            const list = await getList();
+            const jsonData = await axiosData("/data/support.json"); //카테고리 가져오기
+            const list = await getList('all');
             setMenus(jsonData.menus);
             setCategory(jsonData.category);
             setList(list);
@@ -20,17 +20,9 @@ export function Support() {
         fetch();
     }, []);
 
-    const filterList = (type) => {
-        const filter = async() => {
-            const jsonData = await axiosData("/data/support.json");
-            if(type === 'all') {
-                setList(jsonData.list);
-            } else {
-                const filterData = jsonData.list.filter((item)=> item.type === type);
-                setList(filterData); 
-            }
-        }
-        filter();
+    const filterList = async(stype) => {
+        const list = await getList(stype);
+        setList(list);
     }    
 
     return (  

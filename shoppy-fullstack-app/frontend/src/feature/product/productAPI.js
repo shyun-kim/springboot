@@ -11,6 +11,7 @@ export const getReturn = async() => {
     const list = JSON.parse(returnData.list);
     return {...returnData, list: list};
 }
+
 /**
     상품 QnA
 */
@@ -24,8 +25,8 @@ export const getQna = async(pid) => {
 /**
     상품 상세 정보
 */
-export const getDetailInfo = async(pid) => {
-    const url = "/product/detailInfo";
+export const getDetailinfo = async(pid) => {
+    const url = "/product/detailinfo";
     const info  = await axiosPost(url, {"pid": pid});
     const list = JSON.parse(info.list);
     return { ...info, list: list };

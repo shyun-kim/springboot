@@ -9,7 +9,8 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class JdbcTemplateSupportRepository implements SupportRepository {
+public class JdbcTemplateSupportRepository implements SupportRepository{
+
     private JdbcTemplate jdbcTemplate;
 
     public JdbcTemplateSupportRepository(DataSource dataSource) {
@@ -20,7 +21,7 @@ public class JdbcTemplateSupportRepository implements SupportRepository {
     public List<Support> findAll(Support support) {
         String sql = """
                 select sid, title, stype, hits, rdate from support
-                where stype = ?
+                    where stype = ?
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Support.class), support.getStype());
     }
@@ -32,5 +33,4 @@ public class JdbcTemplateSupportRepository implements SupportRepository {
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Support.class));
     }
-
 }
