@@ -18,8 +18,10 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public int save(KakaoPay kakaoPay) {
-        orderRepository.saveOrders(kakaoPay);
-        int result = orderRepository.saveOrderDetail(kakaoPay);
-        return result;
+        int rows = orderRepository.saveOrders(kakaoPay);
+        if(rows == 1) {
+            orderRepository.saveOrderDetail(kakaoPay);
+        }
+        return rows;
     }
 }
