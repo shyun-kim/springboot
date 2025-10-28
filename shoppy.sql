@@ -623,9 +623,14 @@ from view_cartlist
 where cid in ('7,9,11');
     
 select * from view_cartlist;
-    
+select * from orders;    
+select * from order_detail;
 
 
+-- mysql은 수정, 삭제시 update mode 변경
+set sql_safe_updates = 0;
+delete from orders;
+select * from orders;    
+select * from order_detail;
 
-
-
+select * from cart;

@@ -13,7 +13,7 @@ export const getPayment = async(receiver, paymentInfo, cartList) => {
         "totalAmount": cartList[0].totalPrice,
         "receiver": receiver,// -- springboot :: receiver 'inner class'로 생성
         "paymentInfo": paymentInfo, // -- springboot :: receiver 'inner class'로 생성
-        "cidList": cidList.join(",")
+        "cidList": cidList
 //        "cidList": JSON.stringify(cidList)
 
     }
