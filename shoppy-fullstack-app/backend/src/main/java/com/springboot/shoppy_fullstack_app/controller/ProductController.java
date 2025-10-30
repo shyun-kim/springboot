@@ -1,7 +1,7 @@
 package com.springboot.shoppy_fullstack_app.controller;
 
 import com.springboot.shoppy_fullstack_app.dto.Product;
-import com.springboot.shoppy_fullstack_app.dto.ProductDetailinfo;
+import com.springboot.shoppy_fullstack_app.dto.ProductDetailInfo;
 import com.springboot.shoppy_fullstack_app.dto.ProductQna;
 import com.springboot.shoppy_fullstack_app.dto.ProductReturn;
 import com.springboot.shoppy_fullstack_app.service.ProductService;
@@ -31,8 +31,8 @@ public class ProductController {
     }
 
     @PostMapping("/detailinfo")
-    public ProductDetailinfo detailinfo(@RequestBody Product product) {
-        return productService.findDetailinfo(product.getPid());
+    public ProductDetailInfo detailinfo(@RequestBody Product product) {
+        return productService.findDetailInfo(product.getPid());
     }
 
     @PostMapping("/pid")
