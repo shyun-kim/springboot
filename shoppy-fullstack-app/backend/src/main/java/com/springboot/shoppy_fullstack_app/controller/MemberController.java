@@ -49,6 +49,7 @@ public class MemberController {
             //기존 세션 가져오기 - false
             HttpSession session = request.getSession(true);
             session.setAttribute("sid", "hong");
+            //response 객체의 전송되는 쿠키에 세션 객체는 자동으로 담김
             response = ResponseEntity.ok(Map.of("login", true));
         } else {
             response = ResponseEntity.ok(Map.of("login", false));

@@ -33,7 +33,7 @@ public class CartController {
 
     @PostMapping("/list")
     public ResponseEntity<?> findList(@RequestBody CartItem cartItem, HttpServletRequest request) {
-        HttpSession session = request.getSession(); //기존 생성 가져오기
+        HttpSession session = request.getSession(false); //기존 생성 가져오기
         String sid = (String)session.getAttribute("sid");
         String ssid = session.getId();
         System.out.println("sid============>"+sid);
