@@ -15,7 +15,7 @@ import axios from './axiosSetup.js';
 export const refreshCsrfToken = async() => {
     try{
        await axios.get("/csrf/refresh");
-       console.log("---------------> 토큰 배발급")
+       console.log("---------------> 토큰 재발급")
     } catch(error) {
         console.log("csrf token create error :: ", error);
     }

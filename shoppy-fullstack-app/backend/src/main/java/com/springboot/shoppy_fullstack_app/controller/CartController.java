@@ -32,22 +32,23 @@ public class CartController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<?> findList(@RequestBody CartItem cartItem, HttpServletRequest request) {
-        HttpSession session = request.getSession(false); //기존 생성 가져오기
-        String sid = (String)session.getAttribute("sid");
-        String ssid = session.getId();
-        System.out.println("sid============>"+sid);
-        System.out.println("ssid============>"+ssid);
-        ResponseEntity<?> response = null;
+    public List<CartListResponse> findList(@RequestBody CartItem cartItem, HttpServletRequest request) {
 
-        if(ssid != null && sid != null) {
-            List<CartListResponse> list = cartService.findList(cartItem);
-            response = ResponseEntity.ok(list);
-        } else {
-            response = ResponseEntity.ok(Map.of("result", false));
-        }
+//        HttpSession session = request.getSession(false); //기존 생성 가져오기
+//        String sid = (String)session.getAttribute("sid");
+//        String ssid = session.getId();
+//        System.out.println("sid============>"+sid);
+//        System.out.println("ssid============>"+ssid);
+//        ResponseEntity<?> response = null;
+//
+//        if(ssid != null && sid != null) {
+//            List<CartListResponse> list = cartService.findList(cartItem);
+//            response = ResponseEntity.ok(list);
+//        } else {
+//            response = ResponseEntity.ok(Map.of("result", false));
+//        }
 
-        return response;
+        return cartService.findList(cartItem);
     }
 
     @PostMapping("/count")
