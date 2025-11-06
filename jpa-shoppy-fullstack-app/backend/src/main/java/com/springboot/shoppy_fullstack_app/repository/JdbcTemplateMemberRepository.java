@@ -1,6 +1,6 @@
 package com.springboot.shoppy_fullstack_app.repository;
 
-import com.springboot.shoppy_fullstack_app.dto.Member;
+import com.springboot.shoppy_fullstack_app.dto.MemberDto;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import java.util.Optional;
 
 @Repository
-public class JdbcTemplateMemberRepository  implements  MemberRepository{
+public class JdbcTemplateMemberRepository  implements MemberRepository{
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -24,11 +24,11 @@ public class JdbcTemplateMemberRepository  implements  MemberRepository{
      * @return
      */
     @Override
-    public Optional<Member> findByMember(String id) {
+    public Optional<MemberDto> findByMember(String id) {
         String sql = "select ifnull(MAX(id), null) as id, " +
                 " ifnull(MAX(pwd), null) as pwd from member where id = ?";
         try {
-            Member member = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Member.class), id);
+            MemberDto member = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(MemberDto.class), id);
             return Optional.ofNullable(member);
         } catch (EmptyResultDataAccessException e) {
             // 조회 결과가 없을 때 null 반환 대신 Optional.empty()
@@ -51,7 +51,7 @@ public class JdbcTemplateMemberRepository  implements  MemberRepository{
     }
 
     @Override
-    public int save(Member member) {
+    public int save(MemberDto member) {
         String sql = "insert into member(id, pwd, name, phone, email, mdate) values(?, ?, ?, ?, ?, now())";
         Object [] param = {
                 member.getId(),

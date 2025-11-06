@@ -1,8 +1,13 @@
+create database shoppy;
 use shoppy;
 select database();
 show tables;
 select * from member;
 desc member;
+
+insert into member value('test', '1234', 'test', '010-1234-5678', 'test@naver.com', '2025-10-01');
+insert into member value('hong', '1234', 'hong', '010-1234-5678', 'hong@naver.com', '2025-10-02');
+insert into member value('test2', '1234', 'test2', '010-1234-5678', 'test@naver.com', '2025-10-03');
 
 -- pwd 사이즈 변경
 alter table member modify column pwd varchar(100) not null;
@@ -21,6 +26,18 @@ select pwd from member where id='hong';
 select count(*) as pwd from member where id = 'hong';
 
 select * from member;
+
+create table member(
+	id		varchar(50) 	Primary key,	
+	pwd		varchar(100)	not null,
+    name	varchar(100),
+    phone	varchar(200),
+    email	varchar(100),
+    mdate	date
+);
+drop table member;
+
+
 
 /***********************************
 	상품 테이블 생성 : product
@@ -102,7 +119,7 @@ show variables like 'secure_file_priv';
 -- SHOW VARIABLES LIKE 'secure_file_priv';
 
 -- ********
-SET @json = CAST(LOAD_FILE('/usr/local/mysql-files/products.json') AS CHAR CHARACTER SET utf8mb4);
+SET @json = CAST(LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/products.json') AS CHAR CHARACTER SET utf8mb4);
 
 -- JSON이 잘 읽혔는지 확인
 SELECT LENGTH(@json) AS len, JSON_VALID(@json) AS is_valid;
@@ -208,11 +225,13 @@ create table product_qna (
 );
 desc product_qna;
 select * from product_qna;
+drop table product_qna;
 
 -- mysql에서 json, csv, excel... 데이터 파일을 업로드 하는 경로
 show variables like 'secure_file_priv';
 
-SET @json = CAST(LOAD_FILE('/usr/local/mysql-files/productQnA.json') AS CHAR CHARACTER SET utf8mb4);
+SET @json = CAST(LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/productQnA.json') AS CHAR CHARACTER SET utf8mb4);
+set @json = null;
 
 -- JSON이 잘 읽혔는지 확인
 SELECT LENGTH(@json) AS len, JSON_VALID(@json) AS is_valid;
@@ -240,6 +259,14 @@ FROM JSON_TABLE(
              cdate			datetime		path '$.cdate'
 		   ) 
 ) AS jt;
+
+SELECT jt.id
+FROM JSON_TABLE(
+  @json,
+  '$[*]' COLUMNS (id VARCHAR(50) PATH '$.id')
+) AS jt;
+
+SELECT id FROM member;
 
 select * from product_qna;
 select * from member;
@@ -276,7 +303,7 @@ desc product_return;
 select * from product_return;
 
 -- json 파일 형식은 [ { ~~} ], 배열로 감싼 형식
-SET @json = CAST(LOAD_FILE('/usr/local/mysql-files/productReturn.json') AS CHAR CHARACTER SET utf8mb4);
+SET @json = CAST(LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/productReturn.json') AS CHAR CHARACTER SET utf8mb4);
 
 
 -- JSON이 잘 읽혔는지 확인
@@ -542,18 +569,18 @@ use shoppy;
 select database();
 select * from member;
 desc member;
-drop table orders;
+-- drop table orders;
 create table orders (
   oid         		int 			auto_increment	primary key,
   order_code		varchar(40)		not null	unique,		-- 카카오 partner_order_id로 사용
-  member_id	      		varchar(50)    	not null,				-- 회원 아이디
+  member_id	      	varchar(50)    	not null,			-- 회원 아이디
   status        	enum('대기중','결제중','결제완료','취소','환불','만료')
 					not null default	'대기중',
   shipping_fee     	int				not null 	default 0,	-- 배송비
   discount_amount  	int				not null 	default 0,	-- 할인금액
   total_amount     	int				not null,  				-- 결제요청 금액(= 카카오 amount.total)
 
-  -- 수취/배송 스냅샷
+  -- 수취/배송 
   receiver_name    	varchar(50),
   receiver_phone   	varchar(50),
   zipcode          	varchar(20),
@@ -592,45 +619,68 @@ create table order_detail (
 show tables;
 desc order_detail;
 
-select * from view_cartlist where id = "test";
+select * from view_cartlist where id = "hong";
 desc view_cartList;
 
 select * from orders;
 select * from order_detail;
 desc orders;
+select * from order_detail;
 
-insert into orders(
-	order_code, 
-	member_id, 
-    shipping_fee,
-    discount_amount, 
-    total_amount,
-    receiver_name,
-    receiver_phone,
-    zipcode,
-    address1,
-    address2,
-    memo,
-    odate)
-values();
-
-
-insert into order_detail(order_code, pid, pname, size, qty, pid_total_price, discount)
-select
-	'abc', pid, name as pname, size, qty, totalPrice as pid_total_price,
+--
+-- INSERT INTO 
+-- 	order_detail(order_code, pid, pname, size, qty, pid_total_price, discount)
+SELECT 
+	'abc', pid, name AS pname, size, qty, totalPrice AS pid_total_price, 
 	0
-from view_cartlist
-where cid in ('7,9,11');
-    
+FROM view_cartlist
+WHERE cid IN (38,40,42);
+
 select * from view_cartlist;
-select * from orders;    
+
+
+
+-- mysql은 수정, 삭제 시 update mode를 변경
+SET SQL_SAFE_UPDATES = 0;
+      
+--
+use shoppy;
+select database();
+show tables;      
+select * from orders;
 select * from order_detail;
+select * from view_cartlist;
+
+select ifnull(MAX(pwd), null) as pwd from member where id = 'test';
+
+select * from view_cartlist;
+
+select * from member;
+select * from product;
+desc member;
+desc product;
+
+-- findById('test')
+select id from member where id='test';
+
+select pid, name, price, info, rate, trim(image) as image, imgList from product;
+desc product;
+
+select * from product;
+show tables;
+desc order_detail;
+
+ALTER TABLE product CHANGE img_List img_list JSON;
+select * from product;
+
+desc product_detailinfo;
+select * from product_detailinfo;
+                
 
 
--- mysql은 수정, 삭제시 update mode 변경
-set sql_safe_updates = 0;
-delete from orders;
-select * from orders;    
-select * from order_detail;
 
-select * from cart;
+
+
+    
+    
+    

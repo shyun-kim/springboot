@@ -1,12 +1,12 @@
 package com.springboot.shoppy_fullstack_app.repository;
 
-import com.springboot.shoppy_fullstack_app.dto.Member;
+import com.springboot.shoppy_fullstack_app.dto.MemberDto;
 
 import java.util.Optional;
 
 public interface MemberRepository {
-    Optional<Member> findByMember(String id);
+    Optional<MemberDto> findByMember(String id);
     String login(String id);
-    int save(Member member);
+    int save(MemberDto member);
     Long findById(String id);
 }
