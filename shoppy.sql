@@ -9,6 +9,8 @@ insert into member value('test', '1234', 'test', '010-1234-5678', 'test@naver.co
 insert into member value('hong', '1234', 'hong', '010-1234-5678', 'hong@naver.com', '2025-10-02');
 insert into member value('test2', '1234', 'test2', '010-1234-5678', 'test@naver.com', '2025-10-03');
 
+delete from member where id = 'hong';
+
 -- pwd 사이즈 변경
 alter table member modify column pwd varchar(100) not null;
 desc member;
@@ -288,6 +290,7 @@ from member m, product p, product_qna pq
 where m.id = pq.id and p.pid = pq.pid
 	and m.id = 'hong' and p.pid = 1;
     
+select * from cart;
     
 /*********************************************************************
 	상품 Return/Delivery 테이블 생성 : product_return
@@ -464,6 +467,8 @@ select * from cart;
 /*********************************************************************
 	장바구니 리스트 VIEW  생성 : view_cartlist
 **********************************************************************/
+drop view view_cartlist;
+select * from information_schema.views where table_name = 'view_cartlist';
 create view view_cartlist
 as
 select  m.id,
@@ -478,9 +483,9 @@ select  m.id,
 	   c.size,
 	   c.qty,
 	   c.cid,
-       t.totalPrice
+       t.total_price
    from member m, product p, cart c,
-          (select c.id, sum(c.qty * p.price) as totalPrice
+          (select c.id, sum(c.qty * p.price) as total_price
 			from cart c
 			inner join product p on c.pid = p.pid
 			group by c.id) as t
@@ -676,11 +681,12 @@ select * from product;
 desc product_detailinfo;
 select * from product_detailinfo;
                 
+select * from view_cartlist;
+desc view_cartlist;
 
+-- mysql에서는 view 수정 불가, 컬럼 수정 시 재생성
+select * from information_schema.views;
 
-
-
-
-    
-    
-    
+insert into cart(size, qty, pid, id, cdate) values('m', 1, 1, 'test', now());
+select * from cart;
+delete from cart where pid = '1';
