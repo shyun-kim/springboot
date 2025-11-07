@@ -45,7 +45,16 @@ drop table member;
 	상품 테이블 생성 : product
 ***********************************/
 show tables;
--- drop table product;
+drop table product;
+drop table product_detailinfo;
+drop table product_qna;
+drop table cart;
+drop table order_detail;
+
+show tables;
+desc product_detailinfo;
+select * from product;
+
 create table product(
 	pid		int		auto_increment primary key,	
 	name	varchar(200)	not null,
@@ -63,7 +72,7 @@ insert into product(name, price, info, rate, image, imgList)
     ('후드티', 15000, '검정색 후드티', 2.2, '2.webp', JSON_Array('2.webp','2.webp','2.webp')),
     ('원피스', 25000, '원피스', 4, '3.webp', JSON_Array('3.webp','3.webp','3.webp')),
     ('반바지', 12000, '반바지', 3.2, '4.webp', JSON_Array('4.webp','4.webp','4.webp')),
-    ('티셔츠', 20000, '티셔츠', 5, '4.webp', JSON_Array('5.webp','5.webp','5.webp')),
+    ('티셔츠', 20000, '티셔츠', 5, '5.webp', JSON_Array('5.webp','5.webp','5.webp')),
     ('스트레치 비스트 드레스', 55000, '스트레치 비스트 드레스', 3, '6.webp', JSON_Array('6.webp','6.webp','6.webp')),
     ('자켓', 115000, '자켓', 3.5, '7.webp', JSON_Array('7.webp','7.webp','7.webp'));
     
@@ -675,7 +684,8 @@ select * from product;
 show tables;
 desc order_detail;
 
-ALTER TABLE product CHANGE img_List img_list JSON;
+ALTER TABLE product CHANGE imgList img_list JSON;
+desc product;
 select * from product;
 
 desc product_detailinfo;
