@@ -14,6 +14,13 @@ import java.util.List;
 
 @Repository
 public interface JpaCartRepository extends JpaRepository<CartItem, Integer> {
+    /** step3 : 주문/결제 - 장바구니(cart) 아이템 삭제 */
+    @Modifying
+    @Query("delete from CartItem c where c.cid in (:cidList)")
+    int deleteItemList(@Param("cidList") List<Integer> cidList);
+
+
+
     // 장바구니 삭제
     @Modifying
     @Query(value = """

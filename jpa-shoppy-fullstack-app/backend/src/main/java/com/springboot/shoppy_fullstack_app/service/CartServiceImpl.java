@@ -63,7 +63,7 @@ public class CartServiceImpl implements CartService{
             cartItemDto.setCid(qtyDto.getCid());
             cartItemDto.setCheckQty(qtyDto.getCount());
         } else cartItemDto.setCheckQty(0L);
-        System.out.println("=========== qtyDto ==========>>"+ qtyDto);
+//        System.out.println("=========== qtyDto ==========>>"+ qtyDto);
         return cartItemDto;
     }
 
