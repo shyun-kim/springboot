@@ -1,5 +1,6 @@
 package com.springboot.shoppy_fullstack_app.controller;
 
+import com.springboot.shoppy_fullstack_app.dto.PageResponseDto;
 import com.springboot.shoppy_fullstack_app.dto.SupportDto;
 import com.springboot.shoppy_fullstack_app.service.SupportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,13 @@ public class SupportController {
         this.supportService = supportService;
     }
 
+    @PostMapping("/search/list")
+    public PageResponseDto<SupportDto> searchList(@RequestBody SupportDto support) {
+        return supportService.findSearchAll(support);
+    }
+
     @PostMapping("/list")
-    public List<SupportDto> list(@RequestBody SupportDto support) {
+    public PageResponseDto<SupportDto> list(@RequestBody SupportDto support) {
         return supportService.findAll(support);
     }
 }
