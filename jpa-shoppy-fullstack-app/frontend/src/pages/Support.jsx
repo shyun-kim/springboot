@@ -18,40 +18,57 @@ export function Support() {
     const [category, setCategory] = useState([]);
     const [list, setList] = useState([]);
     const [stype, setStype] = useState('all');
+    const [searchData, setSearchData] = useState({});
+    const [type, setType] = useState("menu");
 
 
     useEffect(()=>{
         const fetch = async() => {
-            const data = {
-                "stype": stype,
+            const jsonData = await axiosData("/data/support.json"); //카테고리 가져오기
+            setMenus(jsonData.menus);
+            setCategory(jsonData.category);
+
+            if(type === 'menu') executeMenu();
+            else if(type === 'search') executeSearch();
+
+        }
+        fetch();
+    }, [stype, currentPage, searchData]);
+
+    const executeMenu = async() => {
+        const data = {
+                        "stype": stype,
+                        "currentPage": currentPage,
+                        "pageSize": pageSize
+                    }
+                    const pageList = await getList(data);
+                    setList(pageList.list);
+                    setTotalCount(pageList.totalCount);
+    }
+
+    const executeSearch = async() => {
+        const data = {
+                "type": searchData.type,
+                "keyword": searchData.keyword,
                 "currentPage": currentPage,
                 "pageSize": pageSize
             }
-            const jsonData = await axiosData("/data/support.json"); //카테고리 가져오기
-            const pageList = await getList(data);
-            setMenus(jsonData.menus);
-            setCategory(jsonData.category);
-            setList(pageList.list);
-            setTotalCount(pageList.totalCount);
-        }
-        fetch();
-    }, [stype, currentPage]);
+        const pageList = await getSearchList(data);
+        setList(pageList.list);
+        setTotalCount(pageList.totalCount);
+    }
 
     const filterList = async(stype) => {
         setStype(stype);
         setCurrentPage(1);
+        setType("menu");
+        executeMenu();
     }
 
     const handleSearch = async (searchData) => {
-        const data = {
-                        "type": searchData.type,
-                        "keyword":searchData.keyword,
-                        "currentPage": currentPage,
-                        "pageSize": pageSize
-                    }
-        const pageList = await getSearchList(data);
-        setList(pageList.list);
-        setTotalCount(pageList.totalCount);
+        setType("search");
+        setSearchData(searchData);
+        setCurrentPage(1);
     }
 
     return (  
