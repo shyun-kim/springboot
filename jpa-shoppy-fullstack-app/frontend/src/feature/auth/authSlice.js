@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
+const saveAuth = JSON.parse(localStorage.getItem("auth"));
+
+const initialState = saveAuth || {
   isLogin: false
 }
 
@@ -13,11 +15,25 @@ export const authSlice = createSlice({
             const { userId } = action.payload;
 //            const loginInfo = { "token": "123455dkfdf", "userId": userId};
             const loginInfo = {"userId": userId};
+
             localStorage.setItem("loginInfo", JSON.stringify(loginInfo));
+
+            //새로고침을 위한 데이터 복사(localStorage 저장)
+            localStorage.setItem("auth", JSON.stringify({
+                    isLogin : true,
+                    userId
+                })
+
+            );
+
         },
         logout(state, action) {
             state.isLogin = !state.isLogin;
+
+            //로컬 스토리지 정보 삭제
             localStorage.removeItem("loginInfo");
+            localStorage.removeItem("auth");
+            localStorage.removeItem("cart");
         }
   },
 })
