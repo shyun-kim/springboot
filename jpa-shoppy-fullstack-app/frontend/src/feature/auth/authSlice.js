@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const saveAuth = JSON.parse(localStorage.getItem("auth"));
 
 const initialState = saveAuth || {
-  isLogin: false
+  isLogin: false,
+  role: ''
 }
 
 export const authSlice = createSlice({
@@ -11,17 +12,18 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
         login(state, action) {
+            const { userId, role } = action.payload;
             state.isLogin = !state.isLogin;
-            const { userId } = action.payload;
-//            const loginInfo = { "token": "123455dkfdf", "userId": userId};
-            const loginInfo = {"userId": userId};
+            state.role = role;
 
+            const loginInfo = {"userId": userId};
             localStorage.setItem("loginInfo", JSON.stringify(loginInfo));
 
             //새로고침을 위한 데이터 복사(localStorage 저장)
             localStorage.setItem("auth", JSON.stringify({
                     isLogin : true,
-                    userId
+                    userId,
+                    role
                 })
 
             );

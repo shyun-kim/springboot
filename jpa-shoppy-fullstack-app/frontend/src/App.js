@@ -13,6 +13,8 @@ import { AuthProvider } from './context/AuthContext.js';
 import { ProductProvider } from './context/ProductContext.js';
 import { ProectedPageRoute } from './pages/ProectedPageRoute.js';
 import { PayResult } from './pages/PayResult.jsx';
+import { ShoppyAdmin } from './pages/ShoppyAdmin.jsx';
+
 
 import './styles/cgvSignup.css';
 import './styles/cgv.css';
@@ -49,12 +51,12 @@ export default function App() {
                                 <CheckoutInfo />
                             </ProectedPageRoute>  } />
           <Route path="/payResult" element={<PayResult />} />
-                
           <Route path="/support" element={
             <ProectedPageRoute>
               <Support />
             </ProectedPageRoute>
             } />
+          <Route path="/shoppy/admin" element={<ShoppyAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>
