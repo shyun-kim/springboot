@@ -66,7 +66,7 @@ public class SecurityConfig {
                         .requestMatchers("/csrf/**", "/member/**", "/product/**")
                             .permitAll()
                         .requestMatchers("/cart/**", "/support/**", "/payment/**")
-                            .hasAnyRole("USER", "ADMIN")
+                            .hasAnyRole("USER")
                         .requestMatchers("/admin/**")
                             .hasRole("ADMIN")
                         .anyRequest().authenticated()
