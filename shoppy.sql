@@ -700,3 +700,25 @@ select * from information_schema.views;
 insert into cart(size, qty, pid, id, cdate) values('m', 1, 1, 'test', now());
 select * from cart;
 delete from cart where pid = '1';
+
+select * from support;
+
+use shoppy;
+select * from member;
+
+-- role 컬럼 추가
+alter table member add role varchar(10);
+select * from member;
+update member set role = 'USER';
+update member set role = 'ADMIN' where id = "shoppyadmin";
+
+
+update member set role = 'USER' where id ='test3';
+select * from member where id='hong';
+select * from product;
+
+select *
+from product p, product_detailinfo pd
+where p.pid = pd.pid;
+
+select * from product_qna;

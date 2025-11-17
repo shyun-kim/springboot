@@ -1,0 +1,152 @@
+package com.springboot.shoppy_fullstack_app.controller;
+
+import com.springboot.shoppy_fullstack_app.dto.MemberDto;
+import com.springboot.shoppy_fullstack_app.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/member")
+//@CrossOrigin(origins = {"http://localhost:3000"})
+public class MemberController {
+    private final MemberService memberService;
+    private final AuthenticationManager authenticationManager;
+    private final HttpSessionSecurityContextRepository contextRepository;
+
+    @Autowired
+    public MemberController(MemberService memberService,
+                            AuthenticationManager authenticationManager,
+                            HttpSessionSecurityContextRepository contextRepository) {
+        this.memberService = memberService;
+        this.authenticationManager = authenticationManager;
+        this.contextRepository = contextRepository;
+    }
+
+
+    @PostMapping("/idcheck")
+    public String idcheck(@RequestBody MemberDto member) {
+        boolean result = memberService.idCheck(member.getId());  //아이디 O: 1, X: 0
+        String msg = "";
+        if(result) msg = "이미 사용중인 아이디 입니다.";
+        else msg = "사용이 가능한 아이디 입니다.";
+        return msg;
+    }
+
+    @PostMapping("/signup")
+    public boolean signup(@RequestBody MemberDto member) {
+        boolean result = false;
+        int rows = memberService.signup(member);
+        if(rows == 1) result = true;
+        return result;
+    }
+
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody MemberDto member, HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+            //1. 인증 요청
+            Authentication authenticationRequest =
+                    UsernamePasswordAuthenticationToken.unauthenticated(member.getId(), member.getPwd());
+            //2. 인증 처리
+            Authentication authenticationResponse =
+                    this.authenticationManager.authenticate(authenticationRequest);
+
+            System.out.println("인증 성공: " + authenticationResponse.getPrincipal());
+            System.out.println("======= > " + authenticationResponse.getAuthorities());
+
+            //3. 컨텍스트에 보관 : 세션과 함께 저장되어 사용하다 로그아웃 하면 만료
+            var context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(authenticationResponse);
+            SecurityContextHolder.setContext(context);
+
+            // SecurityContext 세션에 "명시 저장" (requireExplicitSave(true)일 때 필수)
+            contextRepository.saveContext(context, request, response);
+
+            //4. 로그인 성공 시 CSRF 토큰을 재발행하여 출력
+            var xsrf = new Cookie("XSRF-TOKEN", null);
+            xsrf.setPath("/");      //기존과 동일
+            xsrf.setMaxAge(0);      //즉시 만료
+            xsrf.setHttpOnly(false); // 개발중에도 http Only 유지 권장
+//        cookie.setSecure(true); //Https에서만, 로컬 http면 주석
+//        cookie.setDomain("localhost"); //기존쿠키가 domain=localhost 였다면 지정
+            response.addCookie(xsrf);
+
+            return ResponseEntity.ok(Map.of("login", true,
+                    "userId", member.getId(),
+                    "role", authenticationResponse.getAuthorities()
+
+            ));
+
+        }catch(Exception e) {
+            //로그인 실패
+            return ResponseEntity.ok(Map.of("login", false));
+        }
+
+//        ResponseEntity<?> response = null;
+//        boolean result = memberService.login(member);
+//
+//        if(result) {
+//            //세션 생성 - true, 빈값은 생성 파라미터
+//            //기존 세션 가져오기 - false
+//            HttpSession session = request.getSession(true);
+//            session.setAttribute("sid", "hong");
+//            //response 객체의 전송되는 쿠키에 세션 객체는 자동으로 담김
+//            response = ResponseEntity.ok(Map.of("login", true));
+//        } else {
+//            response = ResponseEntity.ok(Map.of("login", false));
+//        }
+//
+//        return response;
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        // 1. 세션이 없으면 생성하지 않고 null 반환 (로그아웃 시 표준 방식)
+        HttpSession session = request.getSession(false);
+
+        // 2. 세션이 존재하면 무효화
+        if(session != null) {
+            session.invalidate();  // 서버 세션 무효화 (JSESSIONID 삭제 명령 포함)
+        }
+
+        // 3. JSESSIONID 만료 쿠키 전송 (Path/Domain 꼭 기존과 동일)
+        var cookie = new Cookie("JSESSIONID", null);
+        cookie.setPath("/"); //기존과 동일
+        cookie.setMaxAge(0); //즉시 만료
+        cookie.setHttpOnly(true); // 개발중에도 http Only 유지 권장
+//        cookie.setSecure(true); //Https에서만, 로컬 http면 주석
+//        cookie.setDomain("localhost"); //기존쿠키가 domain=loca    lhost 였다면 지정
+        response.addCookie(cookie);
+
+        //4. CSRF 토큰을 재발행하여 출력
+        var xsrf = new Cookie("XSRF-TOKEN", null);
+        xsrf.setPath("/");      //기존과 동일
+        xsrf.setMaxAge(0);      //즉시 만료
+        xsrf.setHttpOnly(false); // 개발중에도 http Only 유지 권장
+//        cookie.setSecure(true); //Https에서만, 로컬 http면 주석
+//        cookie.setDomain("localhost"); //기존쿠키가 domain=localhost 였다면 지정
+        response.addCookie(xsrf);
+
+        // 3. 응답: 세션이 있었든 없었든, 클라이언트에게 로그아웃 요청이 성공했음을 알림 (200 OK)
+        //    JSESSIONID 쿠키 삭제는 session.invalidate() 시 서블릿 컨테이너가 처리합니다.
+        return ResponseEntity.ok(Map.of("logout", true));
+    }
+
+
+}
+
+
