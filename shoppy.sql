@@ -722,3 +722,7 @@ from product p, product_detailinfo pd
 where p.pid = pd.pid;
 
 select * from product_qna;
+
+select * from product p, product_qna q
+where p.pid = q.pid
+order by p.pid;

@@ -7,7 +7,6 @@ import com.springboot.shoppy_fullstack_app.dto.ProductReturnDto;
 import com.springboot.shoppy_fullstack_app.entity.Product;
 import com.springboot.shoppy_fullstack_app.entity.ProductDetailinfo;
 import com.springboot.shoppy_fullstack_app.entity.ProductQna;
-import com.springboot.shoppy_fullstack_app.jpa_repository.JpaProductRepository;
 import com.springboot.shoppy_fullstack_app.jpa_repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,25 +19,27 @@ import java.util.Optional;
 //@Transactional
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-    private final JpaProductRepository jpaProductRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, JpaProductRepository jpaProductRepository) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.jpaProductRepository = jpaProductRepository;
     }
 
     @Override
     public ProductReturnDto findReturn() {
 
-        return new ProductReturnDto(jpaProductRepository.findReturn());
+        return new ProductReturnDto(productRepository.findReturn());
     }
 
     @Override
     public List<ProductQnaDto> findQna(int pid) {
         List<ProductQnaDto> list = new ArrayList<>();
-        List<ProductQna> entityList = jpaProductRepository.findQna(pid);
-        entityList.forEach(entity -> list.add(new ProductQnaDto(entity)));
+        Optional<Product> entity = productRepository.findProductWithQna(pid);
+        if(!entity.isEmpty()) {
+            Product product = entity.get();
+            List<ProductQna> qnaList = product.getQna();
+            qnaList.forEach(qna -> list.add(new ProductQnaDto(qna)));
+        }
         return list;
     }
 

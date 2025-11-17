@@ -16,19 +16,11 @@ public class ProductQna {
     private boolean isComplete;
     private boolean isLock;
     private String id;
-    private int pid;
     private String cdate;
 
-    //Entity <=> Dto 변환
-    public ProductQna() {}
-    public ProductQna(ProductQna entity) {
-        this.qid = entity.getQid();
-        this.title = entity.getTitle();
-        this.content = entity.getContent();
-        this.isComplete = entity.isComplete();
-        this.isLock = entity.isLock();
-        this.id = entity.getId();
-        this.pid = entity.getPid();
-        this.cdate = entity.getCdate();
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pid", nullable = false)
+    private Product product;
+
+
 }
